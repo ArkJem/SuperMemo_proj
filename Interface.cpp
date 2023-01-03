@@ -116,9 +116,17 @@ void Interface::drawFrameAddWord()
     cout << "slowo: \n";
     Menu.gotoxy(2, 6);
     cout << "wpisz slowo \n";
-    Menu.gotoxy(3, 9);
-    cout << "wyjdz";
  }
+
+void Interface::drawFrameLearn()
+{
+    Menu Menu;
+    drawFrame();
+    Menu.gotoxy(2, 3);
+    cout << "slowo: \n";  
+    Menu.gotoxy(2, 6);
+    cout << "wpisz slowo \n";
+}
 
 void Interface::printF()
 {

@@ -30,6 +30,8 @@ public:
 	void wordsToArray(string nameBase);
 	vector<vector<string>> arrayWords;
 	void extractWord();
+	void printGetWordsLearn(string firstWord);
+	void checkWord(string gotWord, string compareWord);
 
 };
 

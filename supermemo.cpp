@@ -28,7 +28,9 @@ void WordIn::Write(string nameBase)
                 getline(cin, word);
                 menu.gotoxy(2, 7);
                 getline(cin, anotherWord);
-                WordIn::AddIn(nameBase, word, anotherWord);            
+                WordIn::AddIn(nameBase, word, anotherWord);
+                menu.gotoxy(2, 8);
+                cout << "wcisnij enter aby dodac kolejne slowo lub klawisz esc zeby wyjsc";
                 if (_getch() == 27)
                 {
                     menu.gotoxy(4, 9);
@@ -108,7 +110,6 @@ void WordIn::wordsToArray(string nameBase)
                    
                 }
                 words.push_back(word);
-                //cout << word;
                 int length = line.length() - (line.length() - poz);
                 for (int y = length + 1; y <= line.length(); y++)
                 {
@@ -132,7 +133,8 @@ void WordIn::wordsToArray(string nameBase)
  }
 
 void WordIn::extractWord()
-{    
+{
+    Interface Interface;
     for (size_t i = 0; i < arrayWords.size(); i++)
     {
         for (size_t j = 0; j < arrayWords[i].size(); j++)
@@ -140,8 +142,10 @@ void WordIn::extractWord()
             wordToPrint = arrayWords[i][0];
             wordToGuess = arrayWords[i][1];
         }
-        cout << wordToPrint << endl;
-        cout << wordToGuess << endl;
+        system("CLS");
+        Interface.drawFrameLearn();
+        printGetWordsLearn(wordToPrint);
+        
     }
 }
 
@@ -189,8 +193,35 @@ void WordIn::PrintFile(string nameBase) const
     while (!file.eof());
 }
 
+void WordIn::printGetWordsLearn(string firstWord)
+{
+    string lineLearn;
+    Menu menu;
+    menu.gotoxy(2,4);
+    cout << firstWord << endl;
+    menu.gotoxy(2, 7);
+    getline(cin, lineLearn);
+    menu.gotoxy(2, 10);
+    checkWord(lineLearn, wordToGuess);
+    
 
+}
 
+void WordIn::checkWord(string gotWord, string compareWord)
+{
+    Menu menu;
+
+    //cout << gotWord.length() << " " << compareWord.length() << endl;
+
+    if (compareWord.compare(gotWord) == 1 && gotWord != "")
+    {
+        menu.gotoxy(2, 12);
+        cout << "dobrze" << endl;
+        system("PAUSE");
+
+    }
+}
+    
 
 int main()
 {   

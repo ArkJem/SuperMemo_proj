@@ -28,5 +28,6 @@ public:
 	void up();
 	void down();
 	char enterHit();
+	void drawFrameLearn();
 	const unsigned char menuIndicator = 62; // ustawia znak wskaznika menu
 };
