@@ -21,7 +21,6 @@ private:
 
 public:
 	void Write(string nameBase);
-	void CompareWord();
 	void AddIn(string nameBase,string firstWord, string secondWord);
 	void CreateFileBase(string nameBase);
 	void OpenFile(const string nameBase)const;
@@ -32,6 +31,7 @@ public:
 	void extractWord();
 	void printGetWordsLearn(string firstWord);
 	void checkWord(string gotWord, string compareWord);
+	string removeExtraWhiteSpaces(string s);
 
 };
 

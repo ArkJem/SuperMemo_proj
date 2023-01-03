@@ -10,6 +10,24 @@
 #include "Folder.h"
 #include <shlwapi.h>
 
+string WordIn::removeExtraWhiteSpaces(string s)
+{
+    string result;
+    bool last_was_whitespace = false;  // czy ostatni znak był białym znakiem
+    for (char c : s) {
+        if (c == ' ' || c == '\t' || c == '\n') {
+            if (!last_was_whitespace) {
+                result += c;
+            }
+            last_was_whitespace = true;
+        }
+        else {
+            result += c;
+            last_was_whitespace = false;
+        }
+    }
+    return result;
+}
 
 void WordIn::Write(string nameBase)
 {
@@ -26,8 +44,10 @@ void WordIn::Write(string nameBase)
                 Interface.drawFrameAddWord();
                 menu.gotoxy(2, 4);
                 getline(cin, word);
+                word = removeExtraWhiteSpaces(word);
                 menu.gotoxy(2, 7);
                 getline(cin, anotherWord);
+                anotherWord = removeExtraWhiteSpaces(anotherWord);
                 WordIn::AddIn(nameBase, word, anotherWord);
                 menu.gotoxy(2, 8);
                 cout << "wcisnij enter aby dodac kolejne slowo lub klawisz esc zeby wyjsc";
@@ -56,30 +76,6 @@ void WordIn::OpenFile(const string nameBase) const
     
 }
 
-void WordIn::CompareWord()
-{
-    //cout << word.size(); dlugosc slowa razem z bialymi znakami
-    //string slowo = "jablko1 jest jablkiem1";
-    ifstream ReadMyFile("collection.txt"); // otwiera plik
-
-    while (getline(ReadMyFile, lineInFile)) //petla czyta cala linie w pliku
-    {
-        cout << lineInFile;
-    }
-    ReadMyFile.close();
-    /*
-    if (slowo.compare(word)==0)
-    {
-        cout << "slowo jest poprawne" << endl;
-    }
-    else
-    {
-        cout << "slowo jest niepoprawne" << endl;
-    }
-    */
-    
-
-}
 
 void WordIn::AddIn(string nameBase,string firstWord,string secondWord)
 {
@@ -142,9 +138,10 @@ void WordIn::extractWord()
             wordToPrint = arrayWords[i][0];
             wordToGuess = arrayWords[i][1];
         }
-        system("CLS");
+        cout << wordToGuess << endl;
+        /*system("CLS");
         Interface.drawFrameLearn();
-        printGetWordsLearn(wordToPrint);
+        printGetWordsLearn(wordToPrint);*/
         
     }
 }
@@ -202,7 +199,7 @@ void WordIn::printGetWordsLearn(string firstWord)
     menu.gotoxy(2, 7);
     getline(cin, lineLearn);
     menu.gotoxy(2, 10);
-    checkWord(lineLearn, wordToGuess);
+    checkWord(" " + lineLearn, wordToGuess);
     
 
 }
@@ -210,9 +207,6 @@ void WordIn::printGetWordsLearn(string firstWord)
 void WordIn::checkWord(string gotWord, string compareWord)
 {
     Menu menu;
-
-    //cout << gotWord.length() << " " << compareWord.length() << endl;
-
     if (compareWord.compare(gotWord) == 1 && gotWord != "")
     {
         menu.gotoxy(2, 12);
