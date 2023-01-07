@@ -61,10 +61,13 @@ void Interface::up()
         Menu.gotoxy(13, 19);
         putchar(menuIndicator);
         break;
+    case '6':
+        Menu.gotoxy(13, 20);
+        break;
     }
     wybor--;
     if (wybor < '1') // zamienia zmienna wyboru
-        wybor = '5';
+        wybor = '6';
 }
 
 void Interface::down()
@@ -91,12 +94,16 @@ void Interface::down()
         putchar(menuIndicator);
         break;
     case '5':
+        Menu.gotoxy(13, 20);
+        putchar(menuIndicator);
+        break;
+    case '6':
         Menu.gotoxy(13, 15);
         putchar(menuIndicator);
         break;
     }
     wybor++;
-    if (wybor > '5')
+    if (wybor > '6')
     {
         wybor = '1';
     }
@@ -123,14 +130,14 @@ void Interface::drawFrameLearn()
     Menu Menu;
     drawFrame();
     Menu.gotoxy(2, 3);
-    cout << "slowo: \n";  
-    Menu.gotoxy(2, 6);
-    cout << "wpisz slowo \n";
+    cout << "fraza: \n";  
+    Menu.gotoxy(2, 9);
+    cout << "wpisz przetlumaczona fraze: \n";
 }
 
 void Interface::printF()
 {
-    string nameBase;
+    string nameBase,nameBaseCp;
     WordIn WordIn;
     Menu menu;
     Folder folder;
@@ -142,8 +149,11 @@ void Interface::printF()
         system("CLS");
         cout << "podaj nazwe bazy: \n";
         cin >> nameBase;
+        nameBaseCp = nameBase + "Copy";
         nameBase += ".txt";
+        nameBaseCp += ".txt";
         WordIn.CreateFileBase(nameBase);
+        WordIn.CreateFileBase(nameBaseCp);
         system("CLS");
         system("PAUSE");
         break;
@@ -168,13 +178,22 @@ void Interface::printF()
         system("CLS");
         cout << "podaj nazwę bazy: \n";
         cin >> nameBase;
+        nameBaseCp = nameBase + "Copy";
         nameBase += ".txt";
-        WordIn.wordsToArray(nameBase);
-        WordIn.extractWord();
+        nameBaseCp += ".txt";        
+        WordIn.readLinesFromFile(nameBase,lines);
+        lines.clear();
+        WordIn.toFile(nameBaseCp);
         system("PAUSE");
+        system("CLS");
         break;
     case 18:
-        wybor = '5';
+        system("CLS");
+        cout << "kupa czasu!" << endl;;
+        system("PAUSE");
+        break;
+    case 19:
+        wybor = '6';
         break;
     }
 }

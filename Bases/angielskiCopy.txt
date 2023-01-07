@@ -1,0 +1,15 @@
+0:not good;nie dobrze:1673134644
+0:git git;git git:1673134646
+0:dog;pies:1673134653
+0:tablica;board:1673134654
+0:ktos;somebody:1673134655
+0:kto;who:1673134655
+0:ja;I:1673134656
+0:zaba;frog:1673134656
+0:monitor;screen:1673134657
+0:klucz;key:1673134658
+0:you;ty:1673134659
+5:angielski;english:1673134633
+5:slowo;word:1673134636
+5:jest dobrze;is good:1673134640
+5:cat;kot:1673134648

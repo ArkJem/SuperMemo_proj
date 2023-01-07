@@ -5,6 +5,7 @@
 #include <conio.h>
 #include "Folder.h"
 #include "Menu.h"
+#include <vector>
 
 
 
@@ -30,4 +31,5 @@ public:
 	char enterHit();
 	void drawFrameLearn();
 	const unsigned char menuIndicator = 62; // ustawia znak wskaznika menu
+	vector<string> lines;
 };

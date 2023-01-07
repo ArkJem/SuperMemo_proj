@@ -49,8 +49,10 @@ void Menu::drawMenu(char ch)
     gotoxy(15, 17);
     cout << "Wyswietl wybrana baze";
     gotoxy(15, 18);
-    cout << "Tryb nauki";
+    cout << "Tryb oceny";
     gotoxy(15, 19);
+    cout << "Tryb powtorki";
+    gotoxy(15, 20);
     cout << "Wyjscie";
 switch (ch)
 {
@@ -72,6 +74,10 @@ case '4':
     break;
 case '5':
     gotoxy(13, 19);
+    putchar(menuIndicator);
+    break;
+case '6':
+    gotoxy(13, 20);
     putchar(menuIndicator);
     break;
 }
