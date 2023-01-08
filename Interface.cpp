@@ -12,7 +12,9 @@ void Interface::drawFrame()
     Menu.gotoxy(0, 0);
     cout << char(201);
     for (i = 0; i < 78; i++)
+    {
         cout << char(205);
+    }
     cout << char(187);
     for (i = 2; i < 26; i++)
     {
@@ -23,7 +25,9 @@ void Interface::drawFrame()
 
 
     for (i = 0; i < 78; i++)
+    {
         cout << char(205);
+    }
     cout << char(188);
     for (i = 2; i < 25; i++)
     {

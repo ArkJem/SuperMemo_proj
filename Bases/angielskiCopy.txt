@@ -1,0 +1,12 @@
+0:jest dobrze;is good
+0:cat;kot
+0:dog;pies
+0:tablica;board
+0:ktos;somebody
+0:kto;who
+0:ja;I
+0:zaba;frog
+0:monitor;screen
+0:klucz;key
+0:you;ty
+2:not good;nie dobrze

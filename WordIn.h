@@ -4,6 +4,15 @@
 #include <iostream>
 #include <locale.h>
 #include <vector>
+#include <windows.h>
+#include <fstream>
+#include "Interface.h"
+#include "Menu.h"
+#include "Folder.h"
+#include <shlwapi.h>
+#include <limits>
+#include <istream>
+#include <algorithm>
 
 using namespace std;
 
@@ -28,9 +37,7 @@ public:
 	void AddIn(string nameBase,string firstWord, string secondWord);
 	void CreateFileBase(string nameBase);
 	void OpenFile(const string nameBase)const;
-	void CloseFile()const;
 	void PrintFile(const string nameBase)const;
-	void wordsToArray(string nameBase);
 	vector<string> lines;
 	vector<string> ratings;
 	void extractWord(string liness);
