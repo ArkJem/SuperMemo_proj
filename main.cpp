@@ -18,7 +18,7 @@
 string WordIn::removeExtraWhiteSpaces(string s)
 {
     string result;
-    bool last_was_whitespace = false;  // czy ostatni znak był białym znakiem
+    bool last_was_whitespace = false;
     for (char c : s) {
         if (c == ' ' || c == '\t' || c == '\n') {
             if (!last_was_whitespace) {
@@ -36,15 +36,18 @@ string WordIn::removeExtraWhiteSpaces(string s)
 
 void WordIn::Write(string nameBase)
 {
-    Menu menu;
-    Interface Interface;
-    int escKey = 1;
-    if (escKey != KEYESCAPE)
+    ifstream file(path + nameBase);
+    if (file.good())
     {
+        Menu menu;
+        Interface Interface;
+        int escKey = 1;
+        if (escKey != KEYESCAPE)
+        {
             string tmp;
             getline(cin, tmp);
-            while(escKey != KEYESCAPE)
-            {                
+            while (escKey != KEYESCAPE)
+            {
                 system("cls");
                 Interface.drawFrameAddWord();
                 menu.gotoxy(2, 4);
@@ -53,7 +56,7 @@ void WordIn::Write(string nameBase)
                 menu.gotoxy(2, 7);
                 getline(cin, anotherWord);
                 anotherWord = removeExtraWhiteSpaces(anotherWord);
-                WordIn::AddIn(nameBase, word, anotherWord);
+                AddIn(nameBase, word, anotherWord);
                 menu.gotoxy(2, 8);
                 cout << "wcisnij enter aby dodac kolejne slowo lub klawisz ESC zeby wyjsc";
                 if (_getch() == 27)
@@ -63,7 +66,13 @@ void WordIn::Write(string nameBase)
                 }
 
             }
-        
+
+        }
+    }
+    else
+    {
+        cout << "baza nie istnieje, uzyj opcji dodawania nowej bazy..." << endl;
+        system("PAUSE");
     }
     
     
@@ -85,9 +94,11 @@ void WordIn::OpenFile(const string nameBase) const
 void WordIn::AddIn(string nameBase,string firstWord,string secondWord)
 {
     ofstream AddIn;
-    AddIn.open(path+nameBase, ios_base::app);
+    //Write(nameBase);
+    AddIn.open(path + nameBase, ios_base::app);
     AddIn << firstWord << ";" << secondWord << "\n";
     AddIn.close();
+    
   
 }
 void WordIn::toFile(string nameBaseCp)
@@ -108,19 +119,38 @@ void WordIn::toFile(string nameBaseCp)
 
     }     
 }
+void WordIn::CheckFile(string nameBaseCp, string nameBase)
+{
+    string line;
+    Interface Interface;
+    ifstream file(path + nameBaseCp);
+    if (getline(file,line))
+    {
+        cout << "Nie skonczyles powtorki!" << endl;
+        Interface.wybor = '1';
+    }
+    else
+    {
+        readLinesFromFile(nameBase, lines);
+        toFile(nameBaseCp);
+        lines.clear();
+            
+    }
+    file.close();
+}
 
 void WordIn::readLinesFromFile(string nameBase, vector<string>& lines)
 {
     int i = 0;
-    ifstream file(path + nameBase);
+    ifstream file(path + nameBase);      
     if (file.good())
     {
         string line;
         while (getline(file, line))
         {
-            lines.push_back(line); // Wczytaj linię do tablicy dynamicznej
+            lines.push_back(line);
         }
-        file.close(); // Zamykamy plik
+        file.close();
     }
     else
     {
@@ -131,8 +161,8 @@ void WordIn::readLinesFromFile(string nameBase, vector<string>& lines)
     {
         extractWord(lines[i]);      
     }
-     
 }
+
 
 
 void WordIn::extractWord(string liness)
@@ -148,8 +178,8 @@ void WordIn::extractWord(string liness)
             {
                 word  = word + liness[y];
             }
-            int length = liness.length() - (liness.length() - poz);
-            for (int y = length+1; y <= liness.length(); y++)
+            size_t length = liness.length() - (liness.length() - poz);
+            for (size_t y = length+1; y <= liness.length(); y++)
             {
                                    
                 phrase = phrase + liness[y];                       
@@ -168,7 +198,6 @@ void WordIn::PrintFile(string nameBase) const
     system("CLS");
     Interface Interface;
     Menu Menu;
-    //Interface.drawFrame();
     string line;
     ifstream file(path+nameBase);
     Menu.gotoxy(1, 2);
@@ -186,8 +215,8 @@ void WordIn::PrintFile(string nameBase) const
                     cout << line[y];
                 }
                 cout << " | ";
-                int length = line.length() - (line.length() - poz);
-                for (int y = length+1; y <= line.length(); y++)
+                size_t length = line.length() - (line.length() - poz);
+                for (size_t y = length+1; y <= line.length(); y++)
                 {
                     if (line[y] == ';')
                     {
@@ -230,10 +259,7 @@ void WordIn::printGetWordsLearn(string firstWord,string secondWord)
 void WordIn::checkWord(string gotWord, string compareWord,string copyWord)
 {
     Menu menu;
-    //cout << gotWord << "-" << compareWord << endl;
     compareWord.erase(compareWord.length() - 1, 1);
-    //cout << gotWord.length() << "-" << compareWord.length() << endl;
-    ////cout << gotWord << "-" << compareWord << endl;*/
     if (gotWord == compareWord)
     {
         menu.gotoxy(2, 12);
@@ -241,9 +267,9 @@ void WordIn::checkWord(string gotWord, string compareWord,string copyWord)
         cout << "Bardzo ladnie!" << endl;
         system("COLOR 0");
         correctChar = countSamePositionChars(gotWord, compareWord);
-        wsk = correctChar / compareWord.length();
+        wsk = correctChar / gotWord.length();
         rateC = selectRate(wsk);
-        sClass = selectTime(rateC, compareWord,copyWord);
+        sClass = SaveRate(rateC, compareWord,copyWord);
     }
     else
     {
@@ -252,11 +278,11 @@ void WordIn::checkWord(string gotWord, string compareWord,string copyWord)
         cout << "Nie tym razem!" << endl;
         system("COLOR 0");      
         correctChar = countSamePositionChars(gotWord,compareWord);
-        wsk = correctChar / compareWord.length();
+        wsk = correctChar / gotWord.length();
         rateC = selectRate(wsk);
-        sClass = selectTime(rateC, compareWord,copyWord);
+        sClass = SaveRate(rateC, compareWord,copyWord);
     }
-    getchar();
+    _getch();
 
 }
 
@@ -291,7 +317,7 @@ int WordIn::selectRate(float rate)
         return 0;
     }
 }
-int WordIn::selectTime(int rateClass,string wordToSave,string copyWordT)
+int WordIn::SaveRate(int rateClass,string wordToSave,string copyWordT)
 {
     Menu menu;
     switch (rateClass)
@@ -299,42 +325,42 @@ int WordIn::selectTime(int rateClass,string wordToSave,string copyWordT)
     case 0:
         menu.gotoxy(2, 13);
         cout << "Duzo ci jeszcze brakuje" << endl;
-        ratings.push_back("0:" + copyWordT + ";" + wordToSave + ":" + to_string(timetoGet()));
+        ratings.push_back("0:" + copyWordT + ";" + wordToSave);
         return 0;
         break;
     case 1:
         menu.gotoxy(2, 13);
         cout << "Polowa sukcesu" << endl;
-        ratings.push_back("1:" + copyWordT + ";" + wordToSave + ":" + to_string(timetoGet()));
+        ratings.push_back("1:" + copyWordT + ";" + wordToSave);
         return 1;
         break;
     case 2:
         menu.gotoxy(2, 13);
         cout << "Jest dobrze,ale moglo byc lepiej" << endl;
-        ratings.push_back("2:"+copyWordT + ";" + wordToSave + ":" + to_string(timetoGet()));
+        ratings.push_back("2:"+copyWordT + ";" + wordToSave);
         return 2;
         break;
     case 3:
         menu.gotoxy(2, 13);
         cout << "Juz blizej konca niz poczatku" << endl;
-        ratings.push_back("3:"+copyWordT + ";" + wordToSave + ":" + to_string(timetoGet()));
+        ratings.push_back("3:"+copyWordT + ";" + wordToSave);
         return 3;
         break;
     case 4:
         menu.gotoxy(2, 13);
         cout << "Tak blisko prefekcji" << endl;
-        ratings.push_back("4:" + copyWordT + ";" + wordToSave  + ":" + to_string(timetoGet()));
+        ratings.push_back("4:" + copyWordT + ";" + wordToSave);
         return 4;
         break;
     case 5:
         menu.gotoxy(2, 13);
         cout << "Brawo, tak trzymaj i nie puszczaj :)" << endl;
-        ratings.push_back("5:" + copyWordT + ";" + wordToSave  + ":" + to_string(timetoGet()));
         return 5;
         break;
     default:
         menu.gotoxy(2, 13);
         cout << "cos nie tak" << endl;
+        return -1;
         break;
     }
     
@@ -343,33 +369,50 @@ int WordIn::selectTime(int rateClass,string wordToSave,string copyWordT)
     
 int WordIn::countSamePositionChars(string str3, string str4)
 {
-    int count = 0; // Initialize count to 0
-    int minLength = min(str3.length(), str4.length()); // Find the shorter string
+    int count = 0;
+    int minLength = min(str3.length(), str4.length());
 
-    // Iterate through the characters in the shorter string
     for (int i = 0; i < minLength; i++)
     {
-        // If the characters at position i are the same, increment the count
         if (str3[i] == str4[i])
         {
             count++;
         }
     }
-
-    return count; // Return the count
+    return count;
 }
 
 
-int WordIn::timetoGet()
+void WordIn::RepeatIt(string nameBaseCp)
 {
-    return time(nullptr);
+    ifstream file(path + nameBaseCp);
+    if (file.good())
+    {
+        string line;
+        while (getline(file, line))
+        {
+            if (line[0] == '5')
+            {
+                continue;
+            }
+            else
+            {
+                extractWord(line.substr(2,line.length()));
+                toFile(nameBaseCp);
+            }
+            
+        }
+        file.close();
+    }
+    else
+    {
+        cout << "nie mozna otworzyc pliku " << nameBaseCp << endl;
+    }
 }
-
 
 int main()
 {   
-    string number;
-    string firstWord, secondWord;
+    
     WordIn WordIn;
     Interface Interface;
     Menu menu;

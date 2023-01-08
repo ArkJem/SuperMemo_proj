@@ -130,7 +130,7 @@
     <ClCompile Include="Folder.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="supermemo.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="WordIn.cpp" />
   </ItemGroup>
   <ItemGroup>

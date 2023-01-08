@@ -140,7 +140,6 @@ void Interface::printF()
     string nameBase,nameBaseCp;
     WordIn WordIn;
     Menu menu;
-    Folder folder;
     COORD c;
     c = menu.getpos();
     switch(c.Y)
@@ -159,7 +158,7 @@ void Interface::printF()
         break;
     case 15:
         system("CLS");
-        cout << "podaj nazwę bazy: \n";
+        cout << "podaj nazwe bazy: \n";
         cin >> nameBase;
         nameBase += ".txt";
         system("cls");
@@ -167,7 +166,7 @@ void Interface::printF()
         break;
     case 16:
         system("CLS");
-        cout << "podaj nazwę bazy: \n";
+        cout << "podaj nazwe bazy: \n";
         cin >> nameBase;
         nameBase += ".txt";
         WordIn.PrintFile(nameBase);
@@ -176,20 +175,22 @@ void Interface::printF()
         break;
     case 17:
         system("CLS");
-        cout << "podaj nazwę bazy: \n";
+        cout << "podaj nazwe bazy: \n";
         cin >> nameBase;
         nameBaseCp = nameBase + "Copy";
         nameBase += ".txt";
-        nameBaseCp += ".txt";        
-        WordIn.readLinesFromFile(nameBase,lines);
-        lines.clear();
-        WordIn.toFile(nameBaseCp);
+        nameBaseCp += ".txt";
+        WordIn.CheckFile(nameBaseCp,nameBase);
         system("PAUSE");
         system("CLS");
         break;
     case 18:
         system("CLS");
-        cout << "kupa czasu!" << endl;;
+        cout << "podaj nazwę bazy: \n";
+        cin >> nameBase;
+        nameBaseCp = nameBase + "Copy";
+        nameBaseCp += ".txt";
+        WordIn.RepeatIt(nameBaseCp);
         system("PAUSE");
         break;
     case 19:

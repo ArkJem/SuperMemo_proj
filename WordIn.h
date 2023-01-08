@@ -4,7 +4,6 @@
 #include <iostream>
 #include <locale.h>
 #include <vector>
-#include <ctime>
 
 using namespace std;
 
@@ -18,8 +17,8 @@ private:
 	string lineInFile;
 	string path = ".\\Bases\\";
 	string line;
-	float wsk = 0.0;
-	float correctChar = 0;
+	double wsk = 0.0;
+	double correctChar = 0;
 	int rateC = 0;
 	int sClass = 0;
 	int timeToSave =0;
@@ -39,11 +38,11 @@ public:
 	void checkWord(string gotWord, string compareWord,string copyWord);
 	string removeExtraWhiteSpaces(string s);
 	void readLinesFromFile(string nameBase, vector<string>& lines);
-	void rateUser(string gotWord, string compareWord);
 	int selectRate(float rate);
-	int selectTime(int rateClass, string wordToSave,string copyWordT);
+	int SaveRate(int rateClass, string wordToSave,string copyWordT);
 	void toFile(string nameBase);
-	int timetoGet();
 	int countSamePositionChars(string str1, string str2);
+	void RepeatIt(string nameBaseCp);
+	void CheckFile(string nameBaseCp,string namebase);
 };
 
