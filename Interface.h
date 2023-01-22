@@ -7,10 +7,6 @@
 #include "Menu.h"
 #include <vector>
 
-
-
-#define KEYLEFT 75
-#define KEYRIGHT 77
 #define KEYUP 72
 #define KEYDOWN 80
 #define KEYENTER '\r'
@@ -21,9 +17,10 @@ using namespace std;
 
 class Interface
 {
+private:
+	char choiceCp;
 public:
-	char wybor = '1';
-	void printF();
+	Interface(char& wzor);
 	void drawFrame();
 	void drawFrameAddWord();
 	void up();

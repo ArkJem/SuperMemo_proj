@@ -83,23 +83,3 @@ case '6':
 }
 }
 
-COORD Menu::getpos()
-{
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    COORD coord;
-
-    if (GetConsoleScreenBufferInfo(
-        GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
-    {
-        coord.X = csbi.dwCursorPosition.X;
-        coord.Y = csbi.dwCursorPosition.Y;
-        return coord;
-    }
-    else
-    {
-        coord.X = 0;
-        coord.Y = 0;
-        return coord;
-    }
-}
-

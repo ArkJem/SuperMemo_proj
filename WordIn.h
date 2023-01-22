@@ -9,7 +9,6 @@
 #include "Interface.h"
 #include "Menu.h"
 #include "Folder.h"
-#include <shlwapi.h>
 #include <limits>
 #include <istream>
 #include <algorithm>
@@ -31,7 +30,7 @@ private:
 	int rateC = 0;
 	int sClass = 0;
 	int timeToSave =0;
-		
+	char  choosen = '1';
 public:
 	void Write(string nameBase);
 	void AddIn(string nameBase,string firstWord, string secondWord);
@@ -50,6 +49,9 @@ public:
 	void toFile(string nameBase);
 	int countSamePositionChars(string str1, string str2);
 	void RepeatIt(string nameBaseCp);
-	void CheckFile(string nameBaseCp,string namebase);
+	void CheckFile(string nameBaseCp, string namebase);
+	void replaceLine(vector<string>& ratings, string oldLine, string newLine);
+
+
 };
 

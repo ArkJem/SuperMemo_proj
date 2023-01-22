@@ -1,16 +1,4 @@
-angielski;english
-slowo;word
-jest dobrze;is good
-not good;nie dobrze
-git git;git git
-cat;kot
-dog;pies
-tablica;board
-ktos;somebody
+co;what
 kto;who
-ja;I
-zaba;frog
-monitor;screen
-klucz;key
-you;ty
-
+kot;cat
+pies;dog

@@ -25,7 +25,7 @@ void WordIn::Write(string nameBase)
     if (file.good())
     {
         Menu menu;
-        Interface Interface;
+        Interface Interface(choosen);
         int escKey = 1;
         if (escKey != KEYESCAPE)
         {
@@ -52,7 +52,7 @@ void WordIn::Write(string nameBase)
 
             }
 
-        }
+        } 
     }
     else
     {
@@ -68,9 +68,7 @@ void WordIn::CreateFileBase(string nameBase)
     ifstream file(path + nameBase);
     if (file.good())
     {
-        cout << "Baza juz istnieje" << endl;
-        Sleep(1000);
-
+        cout << "Baza juz istnieje" << endl;        
     }
     else
     {
@@ -92,10 +90,13 @@ void WordIn::AddIn(string nameBase, string firstWord, string secondWord)
 }
 void WordIn::toFile(string nameBaseCp)
 {
+
     auto cmp = [](const std::string& a, const std::string& b) {
         return a[0] < b[0];
     };
     sort(ratings.begin(), ratings.end(), cmp);
+
+  
     ofstream file(path + nameBaseCp);
     if (file.is_open())
     {
@@ -110,22 +111,36 @@ void WordIn::toFile(string nameBaseCp)
 }
 void WordIn::CheckFile(string nameBaseCp, string nameBase)
 {
-    string line;
-    Interface Interface;
+    Menu menu;
+    string line,lineBase;
+    Interface Interface(choosen);
+    ifstream baseFile(path + nameBase);
     ifstream file(path + nameBaseCp);
-    if (getline(file, line))
+    if (baseFile.peek() == EOF)
     {
-        cout << "Nie skonczyles powtorki!" << endl;
-        Interface.wybor = '1';
+        menu.gotoxy(1, 3);
+        cout << "baza glowna jest pusta, koniecznie dodaj slowa za pomoco opcji 'dodaj slowa do bazy'!" << endl;
+
     }
     else
     {
-        readLinesFromFile(nameBase, lines);
-        toFile(nameBaseCp);
-        lines.clear();
+        if (getline(file, line))
+        {
+            if (line[0] == '5')
+            {
+                readLinesFromFile(nameBase, lines);
+                toFile(nameBaseCp);
+                lines.clear();
+            }
+            else
+            {
+                cout << "Nie skonczyles powtorki!" << endl;
+                choosen = '1';
+            }
 
+        }
+        file.close();
     }
-    file.close();
 }
 
 void WordIn::readLinesFromFile(string nameBase, vector<string>& lines)
@@ -156,7 +171,7 @@ void WordIn::readLinesFromFile(string nameBase, vector<string>& lines)
 
 void WordIn::extractWord(string liness)
 {
-    Interface Interface;
+    Interface Interface(choosen);
     for (int x = 0; x < liness.length(); x++)
     {
         string phrase, word;
@@ -182,10 +197,11 @@ void WordIn::extractWord(string liness)
 
 }
 
+
+
 void WordIn::PrintFile(string nameBase) const
 {
     system("CLS");
-    Interface Interface;
     Menu Menu;
     string line;
     ifstream file(path + nameBase);
@@ -228,7 +244,7 @@ void WordIn::PrintFile(string nameBase) const
     }
     else
     {
-        cout << "baza nie istnieje, uzyj opcji dodawania nowej bazy..." << endl;
+        cout << "Baza nie istnieje, uzyj opcji dodawania nowej bazy..." << endl;
     }
 }
 
@@ -241,7 +257,7 @@ void WordIn::printGetWordsLearn(string firstWord, string secondWord)
     menu.gotoxy(2, 4);
     cout << firstWord << endl;
     menu.gotoxy(2, 7);
-    cout << "jesli kursor miga ponizej to wcisnij enter" << endl;
+    cout << "!!Jesli kursor miga ponizej to wcisnij enter!!" << endl;
     getline(cin, tmp);
     menu.gotoxy(2, 10);
     getline(cin, lineLearn);
@@ -267,6 +283,7 @@ void WordIn::checkWord(string gotWord, string compareWord, string copyWord)
             wsk = correctChar / gotWord.length();
             rateC = selectRate(wsk);
             sClass = SaveRate(rateC, compareWord, copyWord);
+            _getch();
         }
         else
         {
@@ -274,6 +291,7 @@ void WordIn::checkWord(string gotWord, string compareWord, string copyWord)
             wsk = correctChar / compareWord.length();
             rateC = selectRate(wsk);
             sClass = SaveRate(rateC, compareWord, copyWord);
+            _getch();
         }
     }
     else
@@ -288,6 +306,7 @@ void WordIn::checkWord(string gotWord, string compareWord, string copyWord)
             wsk = correctChar / gotWord.length();
             rateC = selectRate(wsk);
             sClass = SaveRate(rateC, compareWord, copyWord);
+            _getch();
         }
         else
         {
@@ -295,8 +314,9 @@ void WordIn::checkWord(string gotWord, string compareWord, string copyWord)
             wsk = correctChar / compareWord.length();
             rateC = selectRate(wsk);
             sClass = SaveRate(rateC, compareWord, copyWord);
+            _getch();
         }
-        _getch();
+        
 
     }
 }
@@ -332,6 +352,21 @@ int WordIn::selectRate(float rate)
         return 0;
     }
 }
+
+void WordIn::replaceLine(vector<string>& ratings, string oldLine, string newLine) {
+    for (int i = 0; i < ratings.size(); i++) {
+        std::string line = ratings[i];
+        line = line.substr(line.find(";") + 1);
+        if (line == oldLine) {
+            ratings[i] = newLine;
+            return;
+        }
+    }
+    ratings.push_back(newLine);
+}
+
+
+
 int WordIn::SaveRate(int rateClass, string wordToSave, string copyWordT)
 {
     Menu menu;
@@ -340,41 +375,42 @@ int WordIn::SaveRate(int rateClass, string wordToSave, string copyWordT)
     case 0:
         menu.gotoxy(2, 13);
         cout << "Duzo ci jeszcze brakuje" << endl;
-        ratings.push_back("0:" + copyWordT + ";" + wordToSave);
+        replaceLine(ratings,wordToSave, "0:" + copyWordT + ";" + wordToSave);
         return 0;
         break;
     case 1:
         menu.gotoxy(2, 13);
         cout << "Polowa sukcesu" << endl;
-        ratings.push_back("1:" + copyWordT + ";" + wordToSave);
+        replaceLine(ratings, wordToSave, "1:" + copyWordT + ";" + wordToSave);
         return 1;
         break;
     case 2:
         menu.gotoxy(2, 13);
         cout << "Jest dobrze,ale moglo byc lepiej" << endl;
-        ratings.push_back("2:" + copyWordT + ";" + wordToSave);
+        replaceLine(ratings, wordToSave, "2:" + copyWordT + ";" + wordToSave);
         return 2;
         break;
     case 3:
         menu.gotoxy(2, 13);
         cout << "Juz blizej konca niz poczatku" << endl;
-        ratings.push_back("3:" + copyWordT + ";" + wordToSave);
+        replaceLine(ratings, wordToSave, "3:" + copyWordT + ";" + wordToSave);
         return 3;
         break;
     case 4:
         menu.gotoxy(2, 13);
         cout << "Tak blisko prefekcji" << endl;
-        ratings.push_back("4:" + copyWordT + ";" + wordToSave);
+        replaceLine(ratings, wordToSave, "4:" + copyWordT + ";" + wordToSave);
         return 4;
         break;
     case 5:
         menu.gotoxy(2, 13);
+        replaceLine(ratings, wordToSave,"5:" + copyWordT + ";" + wordToSave);
         cout << "Brawo, tak trzymaj i nie puszczaj :)" << endl;
         return 5;
         break;
     default:
         menu.gotoxy(2, 13);
-        cout << "cos nie tak" << endl;
+        cout << "Cos nie tak" << endl;
         return -1;
         break;
     }
@@ -400,6 +436,7 @@ int WordIn::countSamePositionChars(string str3, string str4)
 
 void WordIn::RepeatIt(string nameBaseCp)
 {
+    Menu menu;
     ifstream file(path + nameBaseCp);
     if (file.good())
     {
@@ -408,19 +445,31 @@ void WordIn::RepeatIt(string nameBaseCp)
         {
             if (line[0] == '5')
             {
-                continue;
+                system("CLS");
+                menu.gotoxy(1, 3);
+                cout << "baza slow jest pusta lub nie rozpoczales trybu oceny albo poprawnie przeszedles tryb powtorki, wcisnij ENTER aby kontynuowac" << endl;
+                break;
             }
             else
             {
-                extractWord(line.substr(2, line.length()));
+                if (line[0] == '5')
+                {
+                    ratings.pop_back();
+                }
+                else
+                {
+                    extractWord(line.substr(2, line.length()));
+
+                }
                 toFile(nameBaseCp);
             }
-
+            
         }
+        
         file.close();
     }
     else
     {
-        cout << "nie mozna otworzyc pliku " << nameBaseCp << endl;
+        cout << "Nie mozna otworzyc pliku " << nameBaseCp << endl;
     }
 }

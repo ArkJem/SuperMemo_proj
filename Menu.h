@@ -6,7 +6,6 @@ class Menu
 {
 public:
 	COORD pos;
-	COORD getpos();
 	void drawMenu(char ch);
 	void gotoxy(int x, int y);
 	void changeColor(int color);
