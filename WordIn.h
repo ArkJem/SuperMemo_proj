@@ -35,7 +35,6 @@ public:
 	void Write(string nameBase);
 	void AddIn(string nameBase,string firstWord, string secondWord);
 	void CreateFileBase(string nameBase);
-	void OpenFile(const string nameBase)const;
 	void PrintFile(const string nameBase)const;
 	vector<string> lines;
 	vector<string> ratings;
